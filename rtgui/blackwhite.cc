@@ -388,10 +388,22 @@ bool BlackWhite::BWComputed_ ()
 
     disableListener ();
     mixerRed->setValue (nextredbw);
+    adjusterChanged(mixerRed, mixerRed->getValue());  
     mixerGreen->setValue (nextgreenbw);
+    adjusterChanged(mixerGreen, mixerGreen->getValue());  
     mixerBlue->setValue (nextbluebw);
+    adjusterChanged(mixerBlue, mixerBlue->getValue()); 
+    autoconn.block (true);
+    autoch->set_active (true);
+    autoconn.block (false);
+    lastAuto = false;
+    nextcount++;
+    //printf("nextcount=%i\n", nextcount);
     enableListener ();
-
+    if (listener  &&nextcount < 3 ) {//activated only 1 time
+        listener->panelChanged (EvAutoch, M("GENERAL_UNCHANGED"));
+    }
+    
     updateRGBLabel();
 
     return false;
@@ -577,7 +589,7 @@ void BlackWhite::write (ProcParams* pp, ParamsEdited* pedited)
     pp->blackwhite.mixerPurple = mixerPurple->getValue ();
     pp->blackwhite.beforeCurve = beforeCurve->getCurve ();
     pp->blackwhite.afterCurve = afterCurve->getCurve ();
-
+//printf("mblue=%i \n",  pp->blackwhite.mixerBlue);
     int tcMode = beforeCurveMode->get_active_row_number();
 
     if      (tcMode == 0) {
@@ -789,6 +801,7 @@ void BlackWhite::filterChanged ()
 
     if (listener && (multiImage || getEnabled())) {
         listener->panelChanged (EvBWfilter, filter->get_active_text ());
+        listener->panelChanged (EvAutoch, M("GENERAL_ENABLED"));     
     }
 }
 
@@ -883,10 +896,11 @@ void BlackWhite::neutral_pressed ()
     enableListener();
 
     updateRGBLabel();
-
+    nextcount = 0;
     if(listener) {
         listener->panelChanged (EvNeutralBW, M("GENERAL_RESET"));
     }
+    
 }
 
 void BlackWhite::enabledcc_toggled ()
@@ -1088,7 +1102,7 @@ void BlackWhite::adjusterChanged (Adjuster* a, double newval)
         if (multiImage && autoch->get_inconsistent()) {
             autoch->set_inconsistent (false);
         }
-
+        nextcount = 0;
         autoconn.block(true);
         autoch->set_active (false);
         autoconn.block(false);
