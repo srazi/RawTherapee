@@ -69,7 +69,6 @@ protected:
 
     double lastAwbEqual;
     double lastAwbTempBias;
-    bool lastbwauto;
     ImProcFunctions ipf;
 
     Glib::ustring monitorProfile;

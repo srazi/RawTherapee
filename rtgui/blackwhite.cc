@@ -128,7 +128,7 @@ BlackWhite::BlackWhite (): FoldableToolPanel(this, "blackwhite", M("TP_BWMIX_LAB
     setting->append (M("TP_BWMIX_SET_ROYGCBPMREL"));
     setting->append (M("TP_BWMIX_SET_INFRARED"));
 
-    setting->set_active (0);
+    setting->set_active (11);
     settingHBox->pack_start (*setting);
     mixerVBox->pack_start (*settingHBox);
     settingconn = setting->signal_changed().connect ( sigc::mem_fun(*this, &BlackWhite::settingChanged) );
@@ -400,7 +400,8 @@ bool BlackWhite::BWComputed_ ()
     nextcount++;
     //printf("nextcount=%i\n", nextcount);
     enableListener ();
-    if (listener  &&nextcount < 3 ) {//activated only 1 time
+    if (listener  && nextcount <= 1 ) {//activated only 1 time, , 
+                  //but perhaps in some cases if we want that all is update pp3, auto, sliders : nextcount <= 2 but it cost time and result is identical
         listener->panelChanged (EvAutoch, M("GENERAL_UNCHANGED"));
     }
     

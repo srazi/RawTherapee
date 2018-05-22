@@ -34,7 +34,7 @@ extern const Settings* settings;
 
 ImProcCoordinator::ImProcCoordinator ()
     : orig_prev (nullptr), oprevi (nullptr), oprevl (nullptr), nprevl (nullptr), fattal_11_dcrop_cache(nullptr), previmg (nullptr), workimg (nullptr),
-      ncie (nullptr), imgsrc (nullptr), lastAwbEqual (0.), lastAwbTempBias (0.0), lastbwauto(false), ipf (&params, true), monitorIntent (RI_RELATIVE),
+      ncie (nullptr), imgsrc (nullptr), lastAwbEqual (0.), lastAwbTempBias (0.0), ipf (&params, true), monitorIntent (RI_RELATIVE),
       softProof (false), gamutCheck (false), scale (10), highDetailPreprocessComputed (false), highDetailRawComputed (false),
       allocated (false), bwAutoR (-9000.f), bwAutoG (-9000.f), bwAutoB (-9000.f), CAMMean (NAN),
 
@@ -551,6 +551,7 @@ void ImProcCoordinator::updatePreviewImage (int todo, Crop* cropCall)
 
             ipf.rgbProc (oprevi, oprevl, nullptr, hltonecurve, shtonecurve, tonecurve, params.toneCurve.saturation,
                          rCurve, gCurve, bCurve, colourToningSatLimit, colourToningSatLimitOpacity, ctColorCurve, ctOpacityCurve, opautili, clToningcurve, cl2Toningcurve, customToneCurve1, customToneCurve2, beforeToneCurveBW, afterToneCurveBW, rrm, ggm, bbm, bwAutoR, bwAutoG, bwAutoB, params.toneCurve.expcomp, params.toneCurve.hlcompr, params.toneCurve.hlcomprthresh, dcpProf, as, histToneCurve);
+            
             if (params.blackwhite.enabled && params.blackwhite.autoc && abwListener) {
                 if (settings->verbose) {
                     printf ("ImProcCoordinator / Auto B&W coefs:   R=%.2f   G=%.2f   B=%.2f\n", bwAutoR, bwAutoG, bwAutoB);
