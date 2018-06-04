@@ -402,7 +402,7 @@ bool BlackWhite::BWComputed_ ()
     enableListener ();
     if (listener  && nextcount <= 1 ) {//activated only 1 time, , 
                   //but perhaps in some cases if we want that all is update pp3, auto, sliders : nextcount <= 2 but it cost time and result is identical
-        listener->panelChanged (EvAutoch, M("GENERAL_UNCHANGED"));
+		listener->panelChanged (EvAutoch, M("GENERAL_ENABLED"));
     }
     
     updateRGBLabel();
@@ -1057,9 +1057,9 @@ void BlackWhite::autoch_toggled ()
         if (listener) {
             if (autoch->get_inconsistent()) {
                 listener->panelChanged (EvAutoch, M("GENERAL_UNCHANGED"));
-            } else if (autoch->get_active ()) {
+            } else if (autoch->get_active ()) {				
                 listener->panelChanged (EvAutoch, M("GENERAL_ENABLED"));
-            } else {
+            } else {			
                 listener->panelChanged (EvAutoch, M("GENERAL_DISABLED"));
             }
         }
@@ -1083,7 +1083,7 @@ void BlackWhite::autoch_toggled ()
 
             updateRGBLabel();
 
-            if (listener) {
+            if (listener) {	
                 listener->panelChanged (EvAutoch, M("GENERAL_ENABLED"));
             }
         } else {
